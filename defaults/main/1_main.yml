@@ -1,0 +1,8 @@
+---
+
+# default config => is overwritten by provided config
+defaults_app: {}
+
+APP_CONFIG: "{{ defaults_app | combine(app, recursive=true) }}"
+
+defaults_instance: {}

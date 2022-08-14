@@ -1,0 +1,11 @@
+---
+
+- name: MailCow | Checking config
+  ansible.builtin.assert:
+    that:
+      - mailcow is defined
+      - "ansible_virtualization_role is undefined or ansible_virtualization_role != 'guest' or 'docker' not in ansible_virtualization_tech_guest"
+
+- name: MailCow | Processing debian config
+  ansible.builtin.import_tasks: debian/main.yml
+  when: "ansible_distribution|lower in ['debian', 'ubuntu']"

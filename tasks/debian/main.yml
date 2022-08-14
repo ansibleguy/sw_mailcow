@@ -1,0 +1,15 @@
+---
+
+- name: MailCow | Debian | Installing docker
+  ansible.builtin.import_role:
+    name: ansibleguy.infra_docker_minimal
+  vars:
+    docker:
+      compose: true
+
+- name: MailCow | Debian | Task
+  ansible.builtin.apt:
+    pkg: "{{ something }}"
+    state: present
+  tags: [base]
+
