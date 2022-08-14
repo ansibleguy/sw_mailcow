@@ -1,8 +1,6 @@
 ---
 
 # default config => is overwritten by provided config
-defaults_app: {}
+defaults_mailcow: {}
 
-APP_CONFIG: "{{ defaults_app | combine(app, recursive=true) }}"
-
-defaults_instance: {}
+MC_CONFIG: "{{ defaults_mailcow | combine(mailcow, recursive=true) }}"

@@ -1,21 +1,20 @@
-[![LOGO-TEXT](URL-to-LOGO)](COMPANY-WEB)
-
-# or to change size:
-<a href="COMPANY-WEB">
-<img src="URL-TO-LOGO" alt="LOGO-TEXT" width="300"/>
+<a href="https://mailcow.email/">
+<img src="https://mailcow.email/img/cow_mailcow.svg" alt="MailCow Logo" width="300"/>
 </a>
 
-# Ansible Role - SOMETHING
+# NOT YET STABLE
 
-Role to deploy something
+This role is still in development => DO NOT USE IT!
 
-# REPLACE: GALAXY_ID & ROLE
+# Ansible Role - MailCow
 
-[![Molecule Test Status](https://badges.ansibleguy.net/ROLE.molecule.svg)](https://molecule.readthedocs.io/en/latest/)
-[![YamlLint Test Status](https://badges.ansibleguy.net/ROLE.yamllint.svg)](https://yamllint.readthedocs.io/en/stable/)
-[![Ansible-Lint Test Status](https://badges.ansibleguy.net/ROLE.ansiblelint.svg)](https://ansible-lint.readthedocs.io/en/latest/)
-[![Ansible Galaxy](https://img.shields.io/ansible/role/GALAXY_ID)](https://galaxy.ansible.com/ansibleguy/ROLE)
-[![Ansible Galaxy Downloads](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Galaxy%20Downloads&query=%24.download_count&url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv1%2Froles%2FGALAXY_ID%2F%3Fformat%3Djson)](https://galaxy.ansible.com/ansibleguy/ROLE)
+Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerized) on a linux server.
+
+[![Molecule Test Status](https://badges.ansibleguy.net/sw_mailcow.molecule.svg)](https://molecule.readthedocs.io/en/latest/)
+[![YamlLint Test Status](https://badges.ansibleguy.net/sw_mailcow.yamllint.svg)](https://yamllint.readthedocs.io/en/stable/)
+[![Ansible-Lint Test Status](https://badges.ansibleguy.net/sw_mailcow.ansiblelint.svg)](https://ansible-lint.readthedocs.io/en/latest/)
+[![Ansible Galaxy](https://img.shields.io/ansible/role/60006)](https://galaxy.ansible.com/ansibleguy/sw_mailcow)
+[![Ansible Galaxy Downloads](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Galaxy%20Downloads&query=%24.download_count&url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv1%2Froles%2F60006%2F%3Fformat%3Djson)](https://galaxy.ansible.com/ansibleguy/sw_mailcow)
 
 
 **Tested:**
@@ -25,6 +24,8 @@ Role to deploy something
 
 * **Package installation**
   * Ansible dependencies (_minimal_)
+  * Docker server => using [THIS Role](https://github.com/ansibleguy/infra_docker_minimal)
+  * Nginx => using [THIS Role](https://github.com/ansibleguy/infra_nginx)
 
 
 * **Configuration**
@@ -71,7 +72,7 @@ ansible-galaxy install -r requirements.yml
 Define the config as needed:
 
 ```yaml
-app:
+mailcow:
 
 ```
 

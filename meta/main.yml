@@ -4,13 +4,21 @@ galaxy_info:
   author: 'AnsibleGuy <guy@ansibleguy.net>'
   namespace: 'ansibleguy'
   license: 'GPLv3'
-  issue_tracker_url: 'https://github.com/ansibleguy/ROLE/issues'
+  issue_tracker_url: 'https://github.com/ansibleguy/sw_mailcow/issues'
   min_ansible_version: 2.9.0
-  description: ''
+  description: 'Ansible role to deploy MailCow dockerized on a linux server'
   platforms:
     - name: Debian
       versions:
         - bullseye
-  galaxy_tags: []
+  galaxy_tags:
+    - 'mail'
+    - 'mailing'
+    - 'mailserver'
+    - 'mailcow'
+    - 'email'
+    - 'webmail'
+    - 'imap'
+    - 'smtp'
 
 collections: []

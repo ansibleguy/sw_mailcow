@@ -6,10 +6,3 @@
   vars:
     docker:
       compose: true
-
-- name: MailCow | Debian | Task
-  ansible.builtin.apt:
-    pkg: "{{ something }}"
-    state: present
-  tags: [base]
-
