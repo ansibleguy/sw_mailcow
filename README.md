@@ -145,7 +145,7 @@ mailcow:
     # if you want to use the built-in letsencrypt support
     SKIP_LETS_ENCRYPT: 'n'
     ACME_CONTACT: 'mailcow@template.ansibleguy.net'
-    ADDITIONAL_SAN: 'mail.ansibleguy.net,mail.*'
+    ADDITIONAL_SAN: 'smtp.template.ansibleguy.net,mail.*'
 ```
 
 
