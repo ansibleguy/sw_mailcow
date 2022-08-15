@@ -19,7 +19,7 @@
   vars:
     docker:
       compose: true
-      compose_version: "{{ mc_compose_version.content | default(MC_HC.compose_version_fallback) }}"
+      compose_version: "{{ mc_compose_version.content | default(MC_HC.compose_version_fallback, true) }}"
   tags: docker
 
 - name: MailCow | Debian | Configuring Nginx webserver
