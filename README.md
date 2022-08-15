@@ -103,6 +103,9 @@ mailcow:
   fqdn: 'srv.template.ansibleguy.net'
   # per example: 'srv.template.ansibleguy.net' must be a valid, public dns-hostname of the server
 
+  # if you don't have IPv6
+  ipv6: false  
+
   nginx:  # configure the webserver settings => see: https://github.com/ansibleguy/infra_nginx
     aliases: ['mail.template.ansibleguy.net']  # additional domains to add to the certificate
     ssl:
@@ -114,6 +117,9 @@ mailcow:
       #      email: 'mailcow@template.ansibleguy.net'
     letsencrypt:
       email: 'mailcow@template.ansibleguy.net'
+
+  config:  # add config overrides for 'maincow.conf'
+    WEBAUTHN_ONLY_TRUSTED_VENDORS: 'y'
 ```
 
 Bare minimum example:
@@ -121,6 +127,25 @@ Bare minimum example:
 mailcow:
   fqdn: 'srv.template.ansibleguy.net'
 ```
+
+If you want to use the built-in (_not ansible-managed_) webserver:
+```yaml
+mailcow:
+  fqdn: 'srv.template.ansibleguy.net'
+  # per example: 'srv.template.ansibleguy.net' must be a valid, public dns-hostname of the server
+
+  manage:
+    webserver: false
+
+  config:
+    HTTP_PORT: 80
+    HTTPS_PORT: 443
+    # if you want to use the built-in letsencrypt support
+    SKIP_LETS_ENCRYPT: 'n'
+    ACME_CONTACT: 'mailcow@template.ansibleguy.net'
+    ADDITIONAL_SAN: 'mail.ansibleguy.net,mail.*'
+```
+
 
 ### Execution
 
