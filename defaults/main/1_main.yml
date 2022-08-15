@@ -1,6 +1,80 @@
 ---
 
+no_prompts: false
+debug: false
+testing: false
+
 # default config => is overwritten by provided config
-defaults_mailcow: {}
+defaults_mailcow:
+  manage:
+    docker: true  # if set to false => you will have to configure docker manually BEFORE running this role
+    webserver: true  # if nginx on docker-host should be installed
+
+  path: '/var/lib/mailcow'
+  fqdn:
+  ipv6: true
+  ipv6_after_install: false  # to run ipv6-disabling tasks after installation is already done
+  service_prefix: ''
+
+  nginx:
+    port_plain: 80
+    port_ssl: 443
+    ssl:
+      mode: 'ca'  # existing/selfsigned/ca/letsencrypt
+      cert:
+        name:
+        cn: 'MailCow Certificate'
+        org: 'AnsibleGuy'
+
+    proxy:
+      proto: 'https'  # targeting 8443 of mailcow's container
+
+  config:
+    # switches for main functionality
+    SKIP_CLAMD: 'no'
+    SKIP_SOGO: 'no'
+    SKIP_SOLR: 'no'
+
+    # basic config
+    HTTP_PORT: 8080
+    HTTPS_PORT: 8443
+    ENABLE_SSL_SNI: 'no'  # see: https://wiki.dovecot.org/SSL/SNIClientSupport
+    USE_WATCHDOG: 'y'  # restart unhealthy containers
+    TZ:  # will use controller-timezone as fallback
+    IPV4_NETWORK:
+    IPV6_NETWORK:
+
+    # letsencrypt
+    SKIP_LETS_ENCRYPT:  # 'y/n'
+    ACME_CONTACT:   # mail address
+    ADDITIONAL_SAN:  # comma separated string
+    #   usage of wildcards will be resolved by mailcow (smtp.* = smtp.domain.tld for every domain..)
+
+    # api
+    API_KEY:
+    API_KEY_READ_ONLY:  # 'y/n'
+    API_ALLOW_FROM:  # comma separated string of ips
+
+    # web apps
+    SOGO_EXPIRE_SESSION: 480
+    WEBAUTHN_ONLY_TRUSTED_VENDORS: 'n'  # certs at '$PATH_REPO/mailcow-dockerized/data/web/inc/lib/WebAuthn/rootCertificates'
+
+    # notifications
+    WATCHDOG_NOTIFY_EMAIL:  # comma separated string
+    WATCHDOG_NOTIFY_BAN: 'n'
+    WATCHDOG_SUBJECT: 'MailCow ALERT'
+    WATCHDOG_EXTERNAL_CHECKS: 'n'
+
+    # logging
+    WATCHDOG_VERBOSE: 'n'
+    LOG_LINES: 9999  # redis log lines per service
 
 MC_CONFIG: "{{ defaults_mailcow | combine(mailcow, recursive=true) }}"
+
+mc_conditionals_nginx:
+  domain: "{{ MC_CONFIG.fqdn }}"
+  proxy:
+    port: "{{ MC_CONFIG.config.HTTPS_PORT }}"
+
+  letsencrypt:
+    email: "{{ MC_CONFIG.config.ACME_CONTACT }}"

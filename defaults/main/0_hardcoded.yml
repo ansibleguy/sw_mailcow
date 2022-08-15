@@ -1,1 +1,11 @@
 ---
+
+MC_HC:
+  url_compose_version: 'https://www.servercow.de/docker-compose/latest.php'
+  compose_version_fallback: '2.9'
+  repo:
+    url: 'https://github.com/mailcow/mailcow-dockerized'
+    branch: 'master'
+  packages:
+    base: ['git', 'python3-pexpect']
+  install_timeout: 60

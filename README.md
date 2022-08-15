@@ -2,10 +2,6 @@
 <img src="https://mailcow.email/img/cow_mailcow.svg" alt="MailCow Logo" width="300"/>
 </a>
 
-# NOT YET STABLE
-
-This role is still in development => DO NOT USE IT!
-
 # Ansible Role - MailCow
 
 Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerized) on a linux server.
@@ -24,24 +20,32 @@ Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerize
 
 * **Package installation**
   * Ansible dependencies (_minimal_)
-  * Docker server => using [THIS Role](https://github.com/ansibleguy/infra_docker_minimal)
-  * Nginx => using [THIS Role](https://github.com/ansibleguy/infra_nginx)
 
 
 * **Configuration**
-  * 
+  * Service to start containers on boot: 'mailcow.service'
 
 
   * **Default config**:
-    * 
- 
+    * Directories:
+      * Base: '/var/lib/mailcow'
+      * Data: '/var/lib/docker/volumes' (_cannot be changed by role_)
+
 
   * **Default opt-ins**:
-    * 
+    * Docker => using [THIS Role](https://github.com/ansibleguy/infra_docker_minimal)
+      * Dependencies
+      * Server
+      * Docker-compose
+    * Nginx proxy on docker-host => using [THIS Role](https://github.com/ansibleguy/infra_nginx)
+  
+    * Features:
+      * [SOGo Groupware](https://www.sogo.nu/)
+      * Apache Solr
+      * ClamAV (_virus scanner_)
+  
+    * IPv6 enabled
 
-
-  * **Default opt-outs**:
-    * 
 
 ## Info
 
@@ -54,6 +58,23 @@ Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerize
 
 
 * **Warning:** Not every setting/variable you provide will be checked for validity. Bad config might break the role!
+
+
+* **Info:** Default credentials:
+
+  User: admin
+  Password: moohoo
+
+
+* **Info:** For more detailed information - look into the [nice documentation](https://mailcow.github.io/mailcow-dockerized-docs) provided by MailCow!
+
+
+* **Info:** If the setup fails after creating the config - you need to remove the config file (_/var/lib/mailcow/mailcow.conf_) manually, so the role will know it isn't initialized already!
+
+
+## Prerequisites
+
+See: [Prerequisites](https://github.com/ansibleguy/sw_mailcow/blob/stable/Prerequisites.md)
 
 
 ## Setup
@@ -73,12 +94,26 @@ Define the config as needed:
 
 ```yaml
 mailcow:
+  fqdn: 'srv.template.ansibleguy.net'
+  # per example: 'srv.template.ansibleguy.net' must be a valid, public dns-hostname of the server
 
+  nginx:  # configure the webserver settings => see: https://github.com/ansibleguy/infra_nginx
+    aliases: ['mail.template.ansibleguy.net']  # additional domains to add to the certificate
+    ssl:
+      mode: 'letsencrypt'  # or selfsigned/ca
+      #  if you use 'selfsigned' or 'ca':
+      #    cert:
+      #      cn: 'MailCow Server'
+      #      org: 'AnsibleGuy'
+      #      email: 'mailcow@template.ansibleguy.net'
+    letsencrypt:
+      email: 'mailcow@template.ansibleguy.net'
 ```
 
-You might want to use 'ansible-vault' to encrypt your passwords:
-```bash
-ansible-vault encrypt_string
+Bare minimum example:
+```yaml
+mailcow:
+  fqdn: 'srv.template.ansibleguy.net'
 ```
 
 ### Execution
@@ -89,8 +124,8 @@ ansible-playbook -K -D -i inventory/hosts.yml playbook.yml
 ```
 
 There are also some useful **tags** available:
-* 
-*
+* docker
+* webserver
 
 To debug errors - you can set the 'debug' variable at runtime:
 ```bash

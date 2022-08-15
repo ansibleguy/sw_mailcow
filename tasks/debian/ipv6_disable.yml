@@ -1,0 +1,52 @@
+---
+
+- name: MailCow | Debian | IPv6 | Disabling ipv6 network
+  ansible.builtin.lineinfile:
+    dest: "{{ MC_CONFIG.path }}/docker-compose.yml"
+    regexp: "^(\\s*)enable_ipv6: true"
+    line: "\\1enable_ipv6: false"
+    state: present
+    backrefs: true
+  notify:
+    - handler_mc_down
+    - handler_mc_up
+
+- name: MailCow | Debian | IPv6 | Disabling ipv6nat-mailcow container
+  ansible.builtin.copy:
+    dest: "{{ MC_CONFIG.path }}/docker-compose.override.yml"
+    content: |
+      # ansible_managed
+
+      version: '2.1'
+      services:
+
+        ipv6nat-mailcow:
+          image: bash:latest
+          restart: "no"
+          entrypoint: ["echo", "ipv6nat disabled in compose.override.yml"]
+
+    mode: 0644
+  notify:
+    - handler_mc_down
+    - handler_mc_up
+
+- name: MailCow | Debian | IPv6 | Disabling IPv6 in unbound
+  ansible.builtin.lineinfile:
+    dest: "{{ MC_CONFIG.path }}/data/conf/unbound/unbound.conf"
+    regexp: "^(\\s*)do-ip6:"
+    line: "\\1do-ip6: no"
+    state: present
+    backrefs: true
+  notify: handler_mc_restart_unbound
+
+- name: MailCow | Debian | IPv6 | Disabling IPv6 in postfix
+  ansible.builtin.copy:
+    dest: "{{ MC_CONFIG.path }}/data/conf/postfix/extra.cf"
+    content: |
+      # ansible_managed
+
+      smtp_address_preference = ipv4
+      inet_protocols = ipv4
+
+    mode: 0644
+  notify: handler_mc_restart_postfix

@@ -1,8 +1,61 @@
 ---
 
+- name: MailCow | Debian | Installing dependencies
+  ansible.builtin.apt:
+    name: "{{ MC_HC.packages.base }}"
+    update_cache: yes
+    state: present
+
+- name: MailCow | Debian | Getting supported docker-compose version
+  ansible.builtin.uri:
+    url: "{{ MC_HC.url_compose_version }}"
+    return_content: yes
+  register: mc_compose_version
+  ignore_errors: true
+
 - name: MailCow | Debian | Installing docker
   ansible.builtin.import_role:
     name: ansibleguy.infra_docker_minimal
   vars:
     docker:
       compose: true
+      compose_version: "{{ mc_compose_version.content | default(MC_HC.compose_version_fallback) }}"
+  tags: docker
+
+- name: MailCow | Debian | Configuring Nginx webserver
+  ansible.builtin.include_role:
+    name: ansibleguy.infra_nginx
+  vars:
+    nginx:
+      sites:
+        mailcow: "{{ mc_conditionals_nginx | combine(MC_CONFIG.nginx, recursive=true) }}"
+  when: MC_CONFIG.manage.webserver
+  tags: webserver
+
+- name: MailCow | Debian | Checking if MailCow is initialized
+  ansible.builtin.stat:
+    path: "{{ MC_CONFIG.path }}/mailcow.conf"
+  register: mc_config_file
+
+- name: MailCow | Debian | Installing
+  ansible.builtin.import_tasks: install.yml
+  when: not mc_config_file.stat.exists
+
+- name: MailCow | Debian | Disabling IPv6 (after installation)
+  ansible.builtin.include_tasks: ipv6_disable.yml
+  when: MC_CONFIG.ipv6_after_install
+
+- name: MailCow | Debian | Adding service files
+  ansible.builtin.template:
+    src: "templates/etc/systemd/system/mailcow.service.j2"
+    dest: "/etc/systemd/system/{{ MC_CONFIG.service_prefix }}mailcow.service"
+    owner: 'root'
+    group: 'root'
+    mode: 0755
+
+- name: MailCow | Debian | Enabling/starting service
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    name: "{{ MC_CONFIG.service_prefix }}mailcow.service"
+    enabled: yes
+    state: started

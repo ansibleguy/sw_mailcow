@@ -1,0 +1,26 @@
+# {{ ansible_managed }}
+# ansibleguy.sw_mailcow
+
+[Unit]
+Description=Service to start MailCow docker containers via docker-compose
+After=network.target
+Documentation=https://mailcow.github.io/mailcow-dockerized-docs
+Documentation=https://github.com/ansibleguy/sw_mailcow
+
+[Service]
+Type=simple
+TimeoutStartSec=600
+ExecStart=docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml up
+{% if ansible_distribution_version == '10' %}
+StandardOutput=syslog
+StandardError=syslog
+{% else %}
+StandardOutput=journal
+StandardError=journal
+{% endif %}
+SyslogIdentifier=mailcow
+Restart=on-failure
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target

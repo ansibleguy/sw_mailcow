@@ -1,0 +1,113 @@
+---
+
+- name: MailCow | Debian | Install | Getting local timezone
+  ansible.builtin.shell: |
+    set -o pipefail
+    timedatectl | grep 'Time zone' | cut -d':' -f2 | cut -d' ' -f2
+  register: mc_controller_tz
+  delegate_to: localhost
+  when: not MC_CONFIG.config.TZ
+  changed_when: false
+  check_mode: false
+  become: false
+
+- name: MailCow | Debian | Install | Downloading source code
+  ansible.builtin.git:
+    repo: "{{ MC_HC.repo.url }}"
+    dest: "{{ MC_CONFIG.path }}"
+    single_branch: yes
+    version: "{{ MC_HC.repo.branch }}"
+  register: mc_download1
+  ignore_errors: true
+
+- name: MailCow | Debian | Install | Creating backup directory
+  ansible.builtin.file:
+    state: directory
+    mode: 0750
+    owner: 'root'
+    group: 'root'
+    path: "/var/backups/mailcow_{{ ansible_date_time.iso8601 }}"
+  when: mc_download1.failed
+
+- name: "MailCow | Debian | Install | Backing-up existing folder to '/var/backups/mailcow_{{ ansible_date_time.iso8601 }}'"
+  ansible.builtin.command: "cp -r {{ MC_CONFIG.path }} /var/backups/mailcow_{{ ansible_date_time.iso8601 }}"
+  when: mc_download1.failed
+
+- name: MailCow | Debian | Install | Downloading source code (force)
+  ansible.builtin.git:
+    repo: "{{ MC_HC.repo.url }}"
+    dest: "{{ MC_CONFIG.path }}"
+    single_branch: yes
+    version: "{{ MC_HC.repo.branch }}"
+    force: yes  # if config does not exist - it should not be initialized
+  register: mc_download2
+  when: mc_download1.failed
+
+- name: MailCow | Debian | Install | Updating directory privileges
+  ansible.builtin.file:
+    state: directory
+    mode: 0750
+    owner: 'root'
+    group: 'root'
+    path: "{{ MC_CONFIG.path }}"
+
+- name: MailCow | Debian | Install | Generating config
+  ansible.builtin.expect:
+    command: './generate_config.sh'
+    responses:
+      A config file exists and will be overwritten: 'Y'
+      Mail server hostname: "{{ MC_CONFIG.fqdn }}"
+      Timezone: "{{ MC_CONFIG.timezone | default('') }}"
+      Do you want to disable ClamAV: 'N'  # see next task
+  args:
+    chdir: "{{ MC_CONFIG.path }}"
+  timeout: "{{ MC_HC.install_timeout }}"
+
+- name: MailCow | Debian | Install | Checking LetsEncrypt config
+  ansible.builtin.set_fact:
+    mc_nginx_letsencrypt: "{{ 'N' if MC_CONFIG.nginx.ssl.mode == 'letsencrypt' else 'Y' }}"
+
+- name: MailCow | Debian | Install | Setting conditional config
+  ansible.builtin.set_fact:
+    mc_conditional_config:
+      TZ: "{{ MC_CONFIG.config.TZ | default(mc_controller_tz.stdout, true) }}"
+      SKIP_LETS_ENCRYPT: "{{ MC_CONFIG.config.SKIP_LETS_ENCRYPT | default(mc_nginx_letsencrypt, true) }}"
+
+- name: MailCow | Debian | Install | Overriding config
+  ansible.builtin.lineinfile:
+    dest: "{{ MC_CONFIG.path }}/mailcow.conf"
+    regexp: "^{{ setting.key }}="
+    line: "{{ setting.key }}={{ setting.value }}"
+    state: present
+  when: setting.value  # skip empty values
+  loop_control:
+    loop_var: setting
+  with_dict: "{{ MC_CONFIG.config | combine(mc_conditional_config, recursive=true) }}"
+
+- name: MailCow | Debian | Install | Fetching generated config
+  ansible.builtin.fetch:
+    src: "{{ MC_CONFIG.path }}/mailcow.conf"
+    dest: "/tmp/{{ inventory_hostname }}-mailcow.conf"
+    flat: yes
+  when: >
+    (not mc_download1.failed and mc_download1.changed) or
+    (mc_download2.changed is defined and mc_download2.changed)
+
+- name: MailCow | Debian | Install | Notify user
+  ansible.builtin.pause:
+    prompt: "The server config can be found at '/tmp/{{ inventory_hostname }}-mailcow.conf' on your controller!"
+    seconds: 10
+  when: >
+    not no_prompts and
+    ((not mc_download1.failed and mc_download1.changed) or
+    (mc_download2.changed is defined and mc_download2.changed))
+
+- name: MailCow | Debian | Install | Disabling IPv6
+  ansible.builtin.import_tasks: ipv6_disable.yml
+  when: not MC_CONFIG.ipv6
+
+- name: MailCow | Debian | Install | Building containers (may take some time)
+  ansible.builtin.command: "docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml pull"
+  when: >
+    (not mc_download1.failed and mc_download1.changed) or
+    (mc_download2.changed is defined and mc_download2.changed)
