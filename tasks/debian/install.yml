@@ -10,6 +10,8 @@
   changed_when: false
   check_mode: false
   become: false
+  args:
+    executable: '/bin/bash'
 
 - name: MailCow | Debian | Install | Downloading source code
   ansible.builtin.git:
