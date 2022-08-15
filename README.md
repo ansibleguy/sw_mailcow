@@ -6,6 +6,8 @@
 
 Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerized) on a linux server.
 
+This role follows the official [installation instructions](https://mailcow.github.io/mailcow-dockerized-docs/de/i_u_m/i_u_m_install/).
+
 [![Molecule Test Status](https://badges.ansibleguy.net/sw_mailcow.molecule.svg)](https://molecule.readthedocs.io/en/latest/)
 [![YamlLint Test Status](https://badges.ansibleguy.net/sw_mailcow.yamllint.svg)](https://yamllint.readthedocs.io/en/stable/)
 [![Ansible-Lint Test Status](https://badges.ansibleguy.net/sw_mailcow.ansiblelint.svg)](https://ansible-lint.readthedocs.io/en/latest/)
