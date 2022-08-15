@@ -49,6 +49,11 @@ Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerize
 
 ## Info
 
+* **Info:** Consider using a **Mail Gateway to gain Security**!
+
+  Per example: [Proxmox Mail Gateway](https://github.com/ansibleguy/sw_proxmox_mail_gw)
+
+
 * **Note:** this role currently only supports debian-based systems
 
 
@@ -63,6 +68,7 @@ Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerize
 * **Info:** Default credentials:
 
   User: admin
+
   Password: moohoo
 
 
