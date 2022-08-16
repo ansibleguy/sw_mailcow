@@ -120,7 +120,7 @@ mailcow:
     letsencrypt:
       email: 'mailcow@template.ansibleguy.net'
 
-  config:  # add config overrides for 'maincow.conf'
+  config:  # add config overrides for 'mailcow.conf'
     WEBAUTHN_ONLY_TRUSTED_VENDORS: 'y'
 ```
 
