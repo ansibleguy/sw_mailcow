@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+# ansibleguy.sw_mailcow
+
+[Unit]
+Description=Timer to start MailCow backup script
+
+[Timer]
+OnCalendar={{ MC_CONFIG.backup.timer }}
+Persistent=false
+WakeSystem=false
+
+[Install]
+WantedBy=multi-user.target

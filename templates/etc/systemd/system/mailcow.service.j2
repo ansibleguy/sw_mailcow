@@ -3,6 +3,7 @@
 
 [Unit]
 Description=Service to start MailCow docker containers via docker-compose
+Requires=docker.service
 After=network.target
 Documentation=https://mailcow.github.io/mailcow-dockerized-docs
 Documentation=https://github.com/ansibleguy/sw_mailcow
@@ -20,7 +21,7 @@ StandardError=journal
 {% endif %}
 SyslogIdentifier=mailcow
 Restart=on-failure
-RestartSec=30s
+RestartSec=60s
 
 [Install]
 WantedBy=multi-user.target

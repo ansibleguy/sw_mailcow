@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+# ansibleguy.sw_mailcow
+
+[Unit]
+Description=Service to start MailCow backup script
+Requires=docker.service
+Documentation=https://mailcow.github.io/mailcow-dockerized-docs/backup_restore/b_n_r-backup/
+Documentation=https://github.com/ansibleguy/sw_mailcow
+
+[Service]
+Type=oneshot
+ExecStart=bash -c '{{ MC_CONFIG.path }}/helper-scripts/backup_and_restore.sh backup {{ MC_CONFIG.backup.components }} --delete-days {{ MC_CONFIG.backup.retention_days }}'
+Environment="MAILCOW_BACKUP_LOCATION={{ MC_CONFIG.backup.path }}"
+
+{% if ansible_distribution_version == '10' %}
+StandardOutput=syslog
+StandardError=syslog
+{% else %}
+StandardOutput=journal
+StandardError=journal
+{% endif %}
+SyslogIdentifier=mailcow_backup

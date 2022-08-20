@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+# ansibleguy.sw_mailcow
+
+[Unit]
+Description=Timer to start MailCow update script
+
+[Timer]
+OnCalendar={{ MC_CONFIG.auto_update.timer }}
+Persistent=false
+WakeSystem=false
+
+[Install]
+WantedBy=multi-user.target

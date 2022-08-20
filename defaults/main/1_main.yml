@@ -68,6 +68,20 @@ defaults_mailcow:
     WATCHDOG_VERBOSE: 'n'
     LOG_LINES: 9999  # redis log lines per service
 
+  auto_update:  # service running timed update: https://mailcow.github.io/mailcow-dockerized-docs/i_u_m/i_u_m_update/
+    enable: false  # don't use if you made changes to the code
+    check: true  # only run in check-mode => output will be logged to syslog
+    args: ['--force', '--theirs', '--skip-ping-check']  # arguments passed to the update script
+    # force will prevent interactive prompts
+    timer: 'Sun *-*-* 00:00:00'
+
+  backup:
+    enable: true
+    path: '/var/backups/mailcow'
+    components: 'all'  # space separated string
+    retention_days: 14
+    timer: '*-*-* 23:00:00'
+
 MC_CONFIG: "{{ defaults_mailcow | combine(mailcow, recursive=true) }}"
 
 mc_conditionals_nginx:

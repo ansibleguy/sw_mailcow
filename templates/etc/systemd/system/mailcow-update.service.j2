@@ -1,0 +1,26 @@
+# {{ ansible_managed }}
+# ansibleguy.sw_mailcow
+
+[Unit]
+Description=Service to start MailCow update script
+Requires=docker.service
+Documentation=https://mailcow.github.io/mailcow-dockerized-docs/i_u_m/i_u_m_update/
+Documentation=https://github.com/ansibleguy/sw_mailcow
+
+[Service]
+Type=oneshot
+{% if MC_CONFIG.auto_update.enable %}
+ExecStart=bash -c "cd '{{ MC_CONFIG.path }}' && {{ MC_CONFIG.path }}/update.sh --check && {{ MC_CONFIG.path }}/update.sh || exit 0"
+ExecStartPost=bash -c "echo 'COMMIT BEFORE LAST UPDATE:' && cd '{{ MC_CONFIG.path }}' && git log --pretty=oneline | grep -i 'before update' | head -n 1"
+{% else %}
+ExecStart=bash -c "cd '{{ MC_CONFIG.path }}' && {{ MC_CONFIG.path }}/update.sh --check || exit 0"
+{% endif %}
+
+{% if ansible_distribution_version == '10' %}
+StandardOutput=syslog
+StandardError=syslog
+{% else %}
+StandardOutput=journal
+StandardError=journal
+{% endif %}
+SyslogIdentifier=mailcow_update

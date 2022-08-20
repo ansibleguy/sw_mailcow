@@ -32,6 +32,7 @@ This role follows the official [installation instructions](https://mailcow.githu
     * Directories:
       * Base: '/var/lib/mailcow'
       * Data: '/var/lib/docker/volumes' (_cannot be changed by role_)
+      * Backup: '/var/backups/mailcow'
 
 
   * **Default opt-ins**:
@@ -47,6 +48,10 @@ This role follows the official [installation instructions](https://mailcow.githu
       * ClamAV (_virus scanner_)
   
     * IPv6 enabled
+    * Daily backup using the [backup script](https://mailcow.github.io/mailcow-dockerized-docs/backup_restore/b_n_r-backup/)
+    
+  * **Default opt-outs**:
+    * Auto update using the [update script](https://mailcow.github.io/mailcow-dockerized-docs/i_u_m/i_u_m_update/)
 
 
 ## Info
@@ -78,6 +83,9 @@ This role follows the official [installation instructions](https://mailcow.githu
 
 
 * **Info:** If the setup fails after creating the config - you need to remove the config file (_/var/lib/mailcow/mailcow.conf_) manually, so the role will know it isn't initialized already!
+
+
+* **Warning:** The automatic **BACKUPS** are placed on the same system and need to be copied to a **REMOTE** location to be SAFE!
 
 
 ## Prerequisites
@@ -122,6 +130,12 @@ mailcow:
 
   config:  # add config overrides for 'mailcow.conf'
     WEBAUTHN_ONLY_TRUSTED_VENDORS: 'y'
+
+  auto_update:
+    enable: true  # enable auto-updates
+
+  backup:
+    retention_days: 60  # default = 14
 ```
 
 Bare minimum example:
