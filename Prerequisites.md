@@ -8,7 +8,7 @@ Make sure your target system meets the [system requirements](https://mailcow.git
   - The target system must be a VM or bare-metal server
   - The target system needs to have a public IP.
   - You need to have a public Domain.
-  - You might want to create a dedicated volume (_maybe use [LVM](https://linuxconfig.org/linux-lvm-logical-volume-manager)_) for the data-directory (_/var/lib/docker/volumes_) - so you can easier extend/manage it.
+  - You might want to create a dedicated volume (_maybe use [LVM](https://linuxconfig.org/linux-lvm-logical-volume-manager)_) for the data-directory (_/var/lib/docker_) - so you can easier extend/manage it.
   - ...
 
 ## Firewalling

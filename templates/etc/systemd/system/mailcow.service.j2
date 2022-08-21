@@ -10,8 +10,9 @@ Documentation=https://github.com/ansibleguy/sw_mailcow
 
 [Service]
 Type=simple
-TimeoutStartSec=600
+TimeoutStartSec=300
 ExecStart=docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml up
+ExecStop=docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml down
 {% if ansible_distribution_version == '10' %}
 StandardOutput=syslog
 StandardError=syslog
