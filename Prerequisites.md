@@ -39,7 +39,7 @@ Use the FORWARD chain instead.
   - APT: 443/tcp+udp to deb.debian.org and security.debian.org (_or whatever main repository you are using_)
 - Proxmox: 443/tcp+udp to download.proxmox.com and enterprise.proxmox.com (_tbc.._)
 - Mailing: 25/tcp to Internet
-- LetsEncrypt: 443/tcp+udp to acme-v02.api.letsencrypt.org and staging-v02.api.letsencrypt.org (_debug mode_)
+- LetsEncrypt: 80/tcp, 443/tcp+udp to acme-v02.api.letsencrypt.org, staging-v02.api.letsencrypt.org (_debug mode_) and r3.o.lencr.org
 - ClamAV: 443/tcp+udp to database.clamav.net
 - SpamAssassin: 80/tcp, 443/tcp+udp to spamassassin.apache.org and domains listed in the [mirror list](https://spamassassin.apache.org/updates/MIRRORED.BY)
 - CloudMark Razor: 2703/tcp to discovery.razor.cloudmark.com and CURRENTLY 208.83.137.0/24
