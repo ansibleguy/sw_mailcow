@@ -82,6 +82,9 @@ defaults_mailcow:
     retention_days: 14
     timer: '*-*-* 23:00:00'
 
+# todo: unbound dns forwarding: https://docs.mailcow.email/manual-guides/Unbound/u_e-unbound-fwd/
+#   note: Many - if not all - blacklist lookups will fail with public resolvers
+
 MC_CONFIG: "{{ defaults_mailcow | combine(mailcow, recursive=true) }}"
 
 mc_conditionals_nginx:
