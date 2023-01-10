@@ -1,5 +1,5 @@
 <a href="https://mailcow.email/">
-<img src="https://mailcow.email/img/cow_mailcow.svg" alt="MailCow Logo" width="300"/>
+<img src="https://www.servercow.de/img/cow_mailcow.svg" alt="MailCow Logo" width="300"/>
 </a>
 
 # Ansible Role - MailCow
