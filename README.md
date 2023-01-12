@@ -18,6 +18,18 @@ This role follows the official [installation instructions](https://mailcow.githu
 **Tested:**
 * Debian 11
 
+## Install
+
+```bash
+ansible-galaxy install ansibleguy.sw_mailcow
+
+# or to custom role-path
+ansible-galaxy install ansibleguy.sw_mailcow --roles-path ./roles
+
+# install dependencies
+ansible-galaxy install -r requirements.yml
+```
+
 ## Functionality
 
 * **Package installation**
@@ -91,15 +103,6 @@ This role follows the official [installation instructions](https://mailcow.githu
 ## Prerequisites
 
 See: [Prerequisites](https://github.com/ansibleguy/sw_mailcow/blob/stable/Prerequisites.md)
-
-
-## Setup
-
-For this role to work - you must install its dependencies first:
-
-```
-ansible-galaxy install -r requirements.yml
-```
 
 
 ## Usage
