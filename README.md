@@ -8,9 +8,9 @@ Role to deploy [MailCow dockerized](https://github.com/mailcow/mailcow-dockerize
 
 This role follows the official [installation instructions](https://mailcow.github.io/mailcow-dockerized-docs/de/i_u_m/i_u_m_install/).
 
-[![Molecule Test Status](https://badges.ansibleguy.net/sw_mailcow.molecule.svg)](https://molecule.readthedocs.io/en/latest/)
-[![YamlLint Test Status](https://badges.ansibleguy.net/sw_mailcow.yamllint.svg)](https://yamllint.readthedocs.io/en/stable/)
-[![Ansible-Lint Test Status](https://badges.ansibleguy.net/sw_mailcow.ansiblelint.svg)](https://ansible-lint.readthedocs.io/en/latest/)
+[![Molecule Test Status](https://badges.ansibleguy.net/sw_mailcow.molecule.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2)
+[![YamlLint Test Status](https://badges.ansibleguy.net/sw_mailcow.yamllint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/yamllint.sh.j2)
+[![Ansible-Lint Test Status](https://badges.ansibleguy.net/sw_mailcow.ansiblelint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/ansiblelint.sh.j2)
 [![Ansible Galaxy](https://img.shields.io/ansible/role/60006)](https://galaxy.ansible.com/ansibleguy/sw_mailcow)
 [![Ansible Galaxy Downloads](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Galaxy%20Downloads&query=%24.download_count&url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv1%2Froles%2F60006%2F%3Fformat%3Djson)](https://galaxy.ansible.com/ansibleguy/sw_mailcow)
 
