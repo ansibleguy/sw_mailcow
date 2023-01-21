@@ -6,4 +6,4 @@
   become: true
   gather_facts: yes
   roles:
-  - ansibleguy.sw_mailcow
+    - ansibleguy.sw_mailcow
