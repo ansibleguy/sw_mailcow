@@ -14,13 +14,16 @@
   ignore_errors: true
 
 - name: MailCow | Debian | Installing docker
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: ansibleguy.infra_docker_minimal
   vars:
     docker:
       compose: true
       compose_version: "{{ mc_compose_version.content | default(MC_HC.compose_version_fallback, true) }}"
   tags: docker
+  args:
+    apply:
+      tags: docker
 
 - name: MailCow | Debian | Configuring Nginx webserver
   ansible.builtin.include_role:
@@ -31,6 +34,9 @@
         mailcow: "{{ mc_conditionals_nginx | combine(MC_CONFIG.nginx, recursive=true) }}"
   when: MC_CONFIG.manage.webserver
   tags: webserver
+  args:
+    apply:
+      tags: webserver
 
 - name: MailCow | Debian | Checking if MailCow is initialized
   ansible.builtin.stat:
