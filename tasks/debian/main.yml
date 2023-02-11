@@ -18,8 +18,9 @@
     name: ansibleguy.infra_docker_minimal
   vars:
     docker:
-      compose: true
-      compose_version: "{{ mc_compose_version.content | default(MC_HC.compose_version_fallback, true) }}"
+      compose:
+        enable: true
+        version: "{{ mc_compose_version.content | default(MC_HC.compose_version_fallback, true) }}"
   tags: docker
   args:
     apply:
