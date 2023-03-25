@@ -2,12 +2,16 @@
 
 - name: handler_mc_down
   ansible.builtin.command: "docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml down"
+  changed_when: false
 
 - name: handler_mc_up
   ansible.builtin.command: "docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml up -d"
+  changed_when: false
 
 - name: handler_mc_restart_unbound
   ansible.builtin.command: "docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml restart unbound-mailcow"
+  changed_when: false
 
 - name: handler_mc_restart_postfix
   ansible.builtin.command: "docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml restart postfix-mailcow"
+  changed_when: false

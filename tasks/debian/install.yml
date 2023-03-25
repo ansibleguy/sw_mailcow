@@ -33,6 +33,7 @@
 
 - name: "MailCow | Debian | Install | Backing-up existing folder to '/var/backups/mailcow_{{ ansible_date_time.iso8601 }}'"
   ansible.builtin.command: "cp -r {{ MC_CONFIG.path }} /var/backups/mailcow_{{ ansible_date_time.iso8601 }}"
+  changed_when: false
   when: mc_download1.failed
 
 - name: MailCow | Debian | Install | Downloading source code (force)
@@ -110,6 +111,7 @@
 
 - name: MailCow | Debian | Install | Building containers (may take some time)
   ansible.builtin.command: "docker-compose -f {{ MC_CONFIG.path }}/docker-compose.yml pull"
+  changed_when: false
   when: >
     (not mc_download1.failed and mc_download1.changed) or
     (mc_download2.changed is defined and mc_download2.changed)
