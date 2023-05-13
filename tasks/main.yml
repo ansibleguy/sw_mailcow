@@ -17,6 +17,7 @@
       - "ansible_virtualization_role is undefined or ansible_virtualization_role != 'guest' or 'docker' not in ansible_virtualization_tech_guest"
       - MC_CONFIG.fqdn
       - MC_CONFIG.fqdn | valid_hostname
+  tags: always
 
 - name: MailCow | Checking config for Nginx
   ansible.builtin.assert:
@@ -24,6 +25,7 @@
       - MC_CONFIG.config.HTTP_PORT | int != MC_CONFIG.nginx.port_plain | int
       - MC_CONFIG.config.HTTPS_PORT | int != MC_CONFIG.nginx.port_ssl | int
   when: MC_CONFIG.manage.webserver | bool
+  tags: always
 
 - name: MailCow | Processing debian config
   ansible.builtin.import_tasks: debian/main.yml

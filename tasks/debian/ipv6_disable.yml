@@ -1,6 +1,6 @@
 ---
 
-- name: MailCow | Debian | IPv6 | Disabling ipv6 network
+- name: MailCow | IPv6 | Disabling ipv6 network
   ansible.builtin.lineinfile:
     dest: "{{ MC_CONFIG.path }}/docker-compose.yml"
     regexp: "^(\\s*)enable_ipv6: true"
@@ -11,7 +11,7 @@
     - handler_mc_down
     - handler_mc_up
 
-- name: MailCow | Debian | IPv6 | Disabling ipv6nat-mailcow container
+- name: MailCow | IPv6 | Disabling ipv6nat-mailcow container
   ansible.builtin.copy:
     dest: "{{ MC_CONFIG.path }}/docker-compose.override.yml"
     content: |
@@ -30,7 +30,7 @@
     - handler_mc_down
     - handler_mc_up
 
-- name: MailCow | Debian | IPv6 | Disabling IPv6 in unbound
+- name: MailCow | IPv6 | Disabling IPv6 in unbound
   ansible.builtin.lineinfile:
     dest: "{{ MC_CONFIG.path }}/data/conf/unbound/unbound.conf"
     regexp: "^(\\s*)do-ip6:"
@@ -39,7 +39,7 @@
     backrefs: true
   notify: handler_mc_restart_unbound
 
-- name: MailCow | Debian | IPv6 | Disabling IPv6 in postfix
+- name: MailCow | IPv6 | Disabling IPv6 in postfix
   ansible.builtin.copy:
     dest: "{{ MC_CONFIG.path }}/data/conf/postfix/extra.cf"
     content: |
