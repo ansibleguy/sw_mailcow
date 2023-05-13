@@ -33,7 +33,7 @@
     nginx:
       sites:
         mailcow: "{{ mc_conditionals_nginx | combine(MC_CONFIG.nginx, recursive=true) }}"
-  when: MC_CONFIG.manage.webserver
+  when: MC_CONFIG.manage.webserver | bool
   tags: webserver
   args:
     apply:

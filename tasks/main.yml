@@ -3,16 +3,12 @@
 - name: MailCow | Showing debug info - user provided config
   ansible.builtin.debug:
     var: mailcow
-  when:
-    - debug is defined
-    - debug
+  when: debug | bool
 
 - name: MailCow | Showing debug info - running config
   ansible.builtin.debug:
     var: MC_CONFIG
-  when:
-    - debug is defined
-    - debug
+  when: debug | bool
 
 - name: MailCow | Checking config
   ansible.builtin.assert:
@@ -27,7 +23,7 @@
     that:
       - MC_CONFIG.config.HTTP_PORT | int != MC_CONFIG.nginx.port_plain | int
       - MC_CONFIG.config.HTTPS_PORT | int != MC_CONFIG.nginx.port_ssl | int
-  when: MC_CONFIG.manage.webserver
+  when: MC_CONFIG.manage.webserver | bool
 
 - name: MailCow | Processing debian config
   ansible.builtin.import_tasks: debian/main.yml
