@@ -1,0 +1,11 @@
+---
+
+MC_CONFIG: "{{ defaults_mailcow | combine(mailcow, recursive=true) }}"
+
+mc_conditionals_nginx:
+  domain: "{{ MC_CONFIG.fqdn }}"
+  proxy:
+    port: "{{ MC_CONFIG.config.HTTPS_PORT }}"
+
+  letsencrypt:
+    email: "{{ MC_CONFIG.config.ACME_CONTACT }}"
