@@ -64,7 +64,7 @@ ansible-galaxy install -r requirements.yml
     * Daily backup using the [backup script](https://mailcow.github.io/mailcow-dockerized-docs/backup_restore/b_n_r-backup/)
     
   * **Default opt-outs**:
-    * Auto update using the [update script](https://mailcow.github.io/mailcow-dockerized-docs/i_u_m/i_u_m_update/)
+    * Auto update using the [update script](https://mailcow.github.io/mailcow-dockerized-docs/i_u_m/i_u_m_update/)  (_NOTE: actually working very well!_)
 
 
 ## Info
