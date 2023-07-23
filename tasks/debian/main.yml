@@ -78,8 +78,8 @@
     - 'mailcow-update.service'
     - 'mailcow-update.timer'
   when: >
-    MC_CONFIG.auto_update.enable or
-    MC_CONFIG.auto_update.check
+    MC_CONFIG.auto_update.enable | bool or
+    MC_CONFIG.auto_update.check | bool
 
 - name: MailCow | Enabling/starting update timer
   ansible.builtin.systemd:
@@ -88,8 +88,8 @@
     enabled: yes
     state: started
   when: >
-    MC_CONFIG.auto_update.enable or
-    MC_CONFIG.auto_update.check
+    MC_CONFIG.auto_update.enable | bool or
+    MC_CONFIG.auto_update.check | bool
 
 - name: MailCow | Adding backup directory
   ansible.builtin.file:
@@ -98,7 +98,7 @@
     owner: 'root'
     group: 'root'
     path: "{{ MC_CONFIG.backup.path }}"
-  when: MC_CONFIG.backup.enable
+  when: MC_CONFIG.backup.enable | bool
 
 - name: MailCow | Adding backup service
   ansible.builtin.template:
@@ -110,7 +110,7 @@
   loop:
     - 'mailcow-backup.service'
     - 'mailcow-backup.timer'
-  when: MC_CONFIG.backup.enable
+  when: MC_CONFIG.backup.enable | bool
 
 - name: MailCow | Enabling/starting backup timer
   ansible.builtin.systemd:
@@ -118,4 +118,4 @@
     name: "{{ MC_CONFIG.service_prefix }}mailcow-backup.timer"
     enabled: yes
     state: started
-  when: MC_CONFIG.backup.enable
+  when: MC_CONFIG.backup.enable | bool
