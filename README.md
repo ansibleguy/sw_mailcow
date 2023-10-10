@@ -74,6 +74,8 @@ ansible-galaxy install -r requirements.yml
   Per example: [Proxmox Mail Gateway](https://github.com/ansibleguy/sw_proxmox_mail_gw)
 
 
+* **Info:** Check out the troubleshooting information: [Troubleshooting](https://github.com/ansibleguy/sw_mailcow/blob/stable/Troubleshooting.md)
+
 * **Note:** this role currently only supports debian-based systems
 
 
