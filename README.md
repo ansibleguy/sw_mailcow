@@ -21,6 +21,10 @@ This role follows the official [installation instructions](https://mailcow.githu
 ## Install
 
 ```bash
+# latest
+ansible-galaxy role install git+https://github.com/ansibleguy/sw_mailcow
+
+# from galaxy
 ansible-galaxy install ansibleguy.sw_mailcow
 
 # or to custom role-path
