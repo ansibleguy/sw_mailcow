@@ -14,6 +14,7 @@ This role follows the official [installation instructions](https://mailcow.githu
 [![Ansible-Lint Test Status](https://badges.ansibleguy.net/sw_mailcow.ansiblelint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/ansiblelint.sh.j2)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/standalone/roles/ansibleguy/sw_mailcow)
 
+[Molecule Logs (if failed)](https://badges.ansibleguy.net/log/molecule_sw_mailcow_test.log)
 
 **Tested:**
 * Debian 11
