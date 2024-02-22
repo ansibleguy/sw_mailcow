@@ -12,6 +12,7 @@ Type=oneshot
 {% if MC_CONFIG.auto_update.enable | bool %}
 ExecStart=bash -c "cd '{{ MC_CONFIG.path }}' && {{ MC_CONFIG.path }}/update.sh --check && {{ MC_CONFIG.path }}/update.sh{% for arg in MC_CONFIG.auto_update.args %} {{ arg }}{% endfor %} || exit 0"
 ExecStartPost=bash -c "echo 'COMMIT BEFORE LAST UPDATE:' && cd '{{ MC_CONFIG.path }}' && git log --pretty=oneline | grep -i 'before update' | head -n 1"
+ExecStartPost=/usr/bin/systemctl restart mailcow.service
 ExecStartPost=/usr/bin/docker image prune -f
 {% else %}
 ExecStart=bash -c "cd '{{ MC_CONFIG.path }}' && {{ MC_CONFIG.path }}/update.sh --check || exit 0"
