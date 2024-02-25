@@ -114,6 +114,8 @@ See: [Prerequisites](https://github.com/ansibleguy/sw_mailcow/blob/stable/Prereq
 
 ## Usage
 
+You want a simple Ansible GUI? Check-out my [Ansible WebUI](https://github.com/ansibleguy/webui)
+
 ### Config
 
 Define the config as needed:
