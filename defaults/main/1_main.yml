@@ -19,7 +19,7 @@ defaults_mailcow:
     port_plain: 80
     port_ssl: 443
     ssl:
-      mode: 'ca'  # existing/selfsigned/ca/letsencrypt
+      mode: 'snakeoil'  # snakeoil/existing/selfsigned/ca/letsencrypt
       cert:
         name:
         cn: 'MailCow Certificate'
