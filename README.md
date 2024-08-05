@@ -64,7 +64,7 @@ mailcow:
   nginx:  # configure the webserver settings => see: https://github.com/ansibleguy/infra_nginx
     aliases: ['mail.template.ansibleguy.net']  # additional domains to add to the certificate
     ssl:
-      mode: 'letsencrypt'  # or selfsigned/ca
+      mode: 'letsencrypt'  # or selfsigned/ca/snakeoil
       #  if you use 'selfsigned' or 'ca':
       #    cert:
       #      cn: 'MailCow Server'
