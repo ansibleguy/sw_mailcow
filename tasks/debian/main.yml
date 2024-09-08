@@ -26,6 +26,24 @@
     apply:
       tags: docker
 
+- name: MailCow | Pulling info on installed packages
+  ansible.builtin.package_facts:
+    manager: auto
+  timeout: 5
+  ignore_errors: true
+  register: mc_packages
+  when: not ignore_firewall_check | bool
+
+- name: MailCow | Failing if Firewall-Setup could cause problems
+  ansible.builtin.assert:
+    that:
+      - "'nftables' not in ansible_facts.packages"
+      - "'iptables' in ansible_facts.packages"
+  when:
+    - not ignore_firewall_check | bool
+    - mc_packages.failed is undefined or not mc_packages.failed
+    - "'packages' in ansible_facts"
+
 - name: MailCow | Configuring Nginx webserver
   ansible.builtin.include_role:
     name: ansibleguy.infra_nginx

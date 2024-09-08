@@ -14,6 +14,7 @@ defaults_mailcow:
   ipv6: true
   ipv6_after_install: false  # to run ipv6-disabling tasks after installation is already done
   service_prefix: ''
+  ignore_firewall_check: false
 
   nginx:
     port_plain: 80

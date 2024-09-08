@@ -159,7 +159,7 @@ ansible-playbook -K -D -i inventory/hosts.yml playbook.yml -e debug=yes
     * Daily backup using the [backup script](https://mailcow.github.io/mailcow-dockerized-docs/backup_restore/b_n_r-backup/)
     
   * **Default opt-outs**:
-    * Auto update using the [update script](https://mailcow.github.io/mailcow-dockerized-docs/i_u_m/i_u_m_update/)  (_NOTE: actually working very well!_)
+    * Auto update using the [update script](https://mailcow.github.io/mailcow-dockerized-docs/i_u_m/i_u_m_update/)
 
 ----
 
@@ -198,3 +198,9 @@ ansible-playbook -K -D -i inventory/hosts.yml playbook.yml -e debug=yes
 
 * **Warning:** The automatic **BACKUPS** are placed on the same system and need to be copied to a **REMOTE** location to be SAFE!
 
+
+* **Warning:** Using **NFTables** on the MailCow host is **NOT RECOMMENDED** as IPTables rules are auto-managed by docker and the MailCow containers.
+
+  Containers may fail if the ruleset is not as expected.
+
+  You can disable the firewall check using the `ignore_firewall_check: true` setting. 
