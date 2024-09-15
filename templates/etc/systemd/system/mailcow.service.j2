@@ -12,7 +12,7 @@ Documentation=https://github.com/ansibleguy/sw_mailcow
 Type=simple
 TimeoutStartSec=300
 ExecStartPre=docker compose -f {{ MC_CONFIG.path }}/docker-compose.yml pull --quiet
-ExecStart=docker compose -f {{ MC_CONFIG.path }}/docker-compose.yml start
+ExecStart=docker compose -f {{ MC_CONFIG.path }}/docker-compose.yml up
 ExecStop=docker compose -f {{ MC_CONFIG.path }}/docker-compose.yml stop --timeout 60
 {% if ansible_distribution_version == '10' %}
 StandardOutput=syslog
